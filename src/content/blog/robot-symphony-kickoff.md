@@ -1,5 +1,5 @@
 ---
-title: '로봇에게 심포니를 연주시킬 수 있을까'
+title: 'Can a Robot Write a Symphony?'
 description: '시뮬 양손 로봇 피아노(RoboPianist) 위에 표현력 보상을 얹는 사이드 프로젝트 킥오프.'
 pubDate: 2026-07-04
 ---
