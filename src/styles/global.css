@@ -31,9 +31,8 @@ body {
 	margin: 0;
 	font-family: var(--serif);
 	color: var(--ink);
-	background:
-		radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, 0.5), transparent 60%),
-		var(--paper);
+	/* Solid paper: overlay layers (masthead wipe) rely on matching this exactly. */
+	background: var(--paper);
 	font-size: 17px;
 	line-height: 1.75;
 	word-break: keep-all;

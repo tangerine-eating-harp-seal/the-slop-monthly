@@ -36,7 +36,11 @@ const edition = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric'
 			<div class="side-tab side-tab--right" aria-hidden="true"></div>
 
 			<p class="kicker publisher">[ {PUBLISHER} ]</p>
-			<h1 class="display masthead">{MASTHEAD}</h1>
+			<h1 class="display masthead">
+				<span class="masthead-layer masthead-en">{MASTHEAD}</span>
+				<span class="masthead-layer masthead-kr" aria-hidden="true">{MASTHEAD_KR}</span>
+				<span class="masthead-layer masthead-en masthead-en-return" aria-hidden="true">{MASTHEAD}</span>
+			</h1>
 			<p class="kicker kicker--faint subtitle">{MASTHEAD_KR} — {edition}</p>
 
 			{
@@ -116,6 +120,76 @@ const edition = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric'
 	}
 	.masthead {
 		font-size: clamp(3.2rem, 11vw, 8rem);
+		display: grid;
+	}
+	.masthead-layer {
+		grid-area: 1 / 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	/*
+	   Page-turn wipe. Three stacked layers on one grid cell:
+	     1. English (base, always there)
+	     2. Korean — wipes in right-to-left, then holds
+	     3. English again — wipes in right-to-left over the Korean, then holds
+	   At the loop point both moving layers snap back to hidden, which is
+	   invisible because layer 3 is pixel-identical to layer 1.
+	   Each moving layer carries the paper background so it occludes the
+	   layer beneath; the mask edge is a soft gradient, so no visible seam.
+	*/
+	.masthead-kr,
+	.masthead-en-return {
+		background: var(--paper);
+		/* bleed past the grid cell so glyph descenders underneath are covered too */
+		margin: -0.18em;
+		mask-image: linear-gradient(100deg, transparent 42%, #000 58%);
+		mask-size: 250% 100%;
+		mask-repeat: no-repeat;
+		mask-position: 0% 0;
+		-webkit-mask-image: linear-gradient(100deg, transparent 42%, #000 58%);
+		-webkit-mask-size: 250% 100%;
+		-webkit-mask-repeat: no-repeat;
+		-webkit-mask-position: 0% 0;
+	}
+	.masthead-kr {
+		font-family: 'Noto Serif KR', var(--serif);
+		font-weight: 900;
+		animation: turn-in-kr 11s infinite;
+	}
+	.masthead-en-return {
+		animation: turn-in-en 11s infinite;
+	}
+	@keyframes turn-in-kr {
+		0% {
+			mask-position: 0% 0;
+			-webkit-mask-position: 0% 0;
+			animation-timing-function: ease-in-out;
+		}
+		38%,
+		100% {
+			mask-position: 100% 0;
+			-webkit-mask-position: 100% 0;
+		}
+	}
+	@keyframes turn-in-en {
+		0%,
+		50% {
+			mask-position: 0% 0;
+			-webkit-mask-position: 0% 0;
+			animation-timing-function: ease-in-out;
+		}
+		88%,
+		100% {
+			mask-position: 100% 0;
+			-webkit-mask-position: 100% 0;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.masthead-kr,
+		.masthead-en-return {
+			display: none;
+		}
 	}
 	.subtitle {
 		margin: 1.4rem 0 3rem;
