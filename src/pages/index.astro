@@ -156,18 +156,18 @@ const edition = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric'
 		font-family: 'Nanum Myeongjo', 'Noto Serif KR', var(--serif);
 		font-weight: 400;
 		letter-spacing: 0.04em;
-		animation: turn-in-kr 11s infinite;
+		animation: turn-in-kr 8s infinite;
 	}
 	.masthead-en-return {
-		animation: turn-in-en 11s infinite;
+		animation: turn-in-en 8s infinite;
 	}
 	@keyframes turn-in-kr {
 		0% {
 			mask-position: 0% 0;
 			-webkit-mask-position: 0% 0;
-			animation-timing-function: ease-in-out;
+			animation-timing-function: ease-out;
 		}
-		38%,
+		22%,
 		100% {
 			mask-position: 100% 0;
 			-webkit-mask-position: 100% 0;
@@ -178,9 +178,9 @@ const edition = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric'
 		50% {
 			mask-position: 0% 0;
 			-webkit-mask-position: 0% 0;
-			animation-timing-function: ease-in-out;
+			animation-timing-function: ease-out;
 		}
-		88%,
+		72%,
 		100% {
 			mask-position: 100% 0;
 			-webkit-mask-position: 100% 0;
