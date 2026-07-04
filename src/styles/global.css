@@ -1,125 +1,176 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+  The Slop Monthly — editorial magazine theme.
+  Paper background, ink text, hairline rules, serif display type.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Noto+Serif+KR:wght@400;600;900&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	--paper: #f1efe9;
+	--paper-deep: #e9e6de;
+	--ink: #191817;
+	--ink-soft: #4a4741;
+	--ink-faint: #8b867c;
+	--rule: #191817;
+	--rule-faint: #c9c4b8;
+	--serif: 'Playfair Display', 'Noto Serif KR', 'Apple SD Gothic Neo', serif;
+	--sans: 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+	--page-max: 1080px;
+	--page-pad: clamp(1.25rem, 4vw, 3rem);
 }
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	background: var(--paper);
+}
+
 body {
-	font-family: var(--font-atkinson);
 	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	font-family: var(--serif);
+	color: var(--ink);
+	background:
+		radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, 0.5), transparent 60%),
+		var(--paper);
+	font-size: 17px;
+	line-height: 1.75;
+	word-break: keep-all;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
 }
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+
+/* ---------- type utilities ---------- */
+
+.kicker {
+	font-family: var(--sans);
+	font-size: 0.7rem;
+	font-weight: 600;
+	letter-spacing: 0.32em;
+	text-transform: uppercase;
+	color: var(--ink);
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
+
+.kicker--faint {
+	color: var(--ink-faint);
 }
-h1 {
-	font-size: 3.052em;
+
+.display {
+	font-family: var(--serif);
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	line-height: 1.02;
+	margin: 0;
+	text-wrap: balance;
 }
-h2 {
-	font-size: 2.441em;
+
+.rule {
+	border: none;
+	border-top: 1px solid var(--rule);
+	margin: 0;
+	width: 100%;
 }
-h3 {
-	font-size: 1.953em;
+
+.rule--faint {
+	border-top-color: var(--rule-faint);
 }
-h4 {
-	font-size: 1.563em;
+
+.rule--thick {
+	border-top-width: 3px;
 }
-h5 {
-	font-size: 1.25em;
+
+/* ---------- base elements ---------- */
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--serif);
+	font-weight: 700;
+	line-height: 1.15;
+	color: var(--ink);
+	margin: 2.2em 0 0.6em;
+	text-wrap: balance;
 }
-strong,
-b {
+
+h1 { font-size: 2.6rem; font-weight: 500; }
+h2 { font-size: 1.7rem; }
+h3 { font-size: 1.3rem; }
+
+p {
+	margin: 0 0 1.2em;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+	transition: opacity 0.15s ease;
+}
+
+strong, b {
 	font-weight: 700;
 }
-a {
-	color: var(--accent);
-}
-a:hover {
-	color: var(--accent);
-}
-p {
-	margin-bottom: 1em;
-}
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
+
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	display: block;
 }
+
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+	font-size: 0.82em;
+	background: var(--paper-deep);
+	padding: 2px 6px;
+	border: 1px solid var(--rule-faint);
 }
+
 pre {
-	padding: 1.5em;
-	border-radius: 8px;
+	background: var(--ink);
+	color: var(--paper);
+	padding: 1.4em 1.6em;
+	overflow-x: auto;
+	font-size: 0.85rem;
+	line-height: 1.7;
 }
+
 pre > code {
 	all: unset;
+	font-family: 'SF Mono', ui-monospace, Menlo, monospace;
 }
+
 blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
+	margin: 2.2em 0;
+	padding: 0 0 0 1.6em;
+	border-left: 3px solid var(--ink);
+	font-style: italic;
+	font-size: 1.15em;
+	color: var(--ink-soft);
 }
+
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--rule-faint);
+	margin: 3em auto;
+	width: 40%;
 }
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+	font-family: var(--sans);
+	font-size: 0.88rem;
+}
+
+th, td {
+	border-top: 1px solid var(--rule-faint);
+	padding: 0.6em 0.8em;
+	text-align: left;
+}
+
+th {
+	font-size: 0.7rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	border-top: 2px solid var(--rule);
 }
 
 .sr-only {
@@ -130,12 +181,8 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

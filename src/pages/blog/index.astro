@@ -1,114 +1,103 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { SITE_DESCRIPTION, SITE_TITLE, issueNumber, url } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 );
+const issues = posts
+	.map((post, i) => ({ post, no: issueNumber(i + 1) }))
+	.reverse();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+		<BaseHead title={`Index — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
-		<Header />
+		<Header compact />
 		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
+			<div class="index-bar">
+				<span class="kicker">{issues[0]?.no ?? '#000'}</span>
+				<span class="kicker">The Index</span>
+				<span class="kicker">{issues[0]?.no ?? '#000'}</span>
+			</div>
+
+			<h1 class="display index-title">Index</h1>
+
+			<section class="entries">
+				{
+					issues.map(({ post, no }) => (
+						<a class="entry" href={url(`/blog/${post.id}/`)}>
+							<span class="kicker kicker--faint entry-no">{no}</span>
+							<div class="entry-body">
+								<h2 class="display entry-title">{post.data.title}</h2>
+								<p class="entry-desc">{post.data.description}</p>
+							</div>
+							<span class="kicker kicker--faint entry-date">
+								<FormattedDate date={post.data.pubDate} />
+							</span>
+						</a>
+					))
+				}
 			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	main {
+		max-width: var(--page-max);
+		margin: 0 auto;
+		padding: 2.5rem var(--page-pad) 0;
+	}
+	.index-bar {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		padding-bottom: 0.8rem;
+		border-bottom: 1px solid var(--rule);
+	}
+	.index-title {
+		font-size: clamp(4rem, 16vw, 11rem);
+		text-align: center;
+		text-transform: uppercase;
+		margin: 2rem 0 3.5rem;
+	}
+	.entries {
+		border-top: 3px solid var(--rule);
+	}
+	.entry {
+		display: grid;
+		grid-template-columns: 5rem 1fr auto;
+		gap: 2rem;
+		align-items: baseline;
+		padding: 2.2rem 0;
+		border-bottom: 1px solid var(--rule-faint);
+	}
+	.entry:hover .entry-title {
+		font-style: italic;
+	}
+	.entry-title {
+		font-size: clamp(1.5rem, 3.5vw, 2.3rem);
+		font-weight: 500;
+	}
+	.entry-desc {
+		margin: 0.7rem 0 0;
+		color: var(--ink-soft);
+		font-size: 0.98rem;
+		max-width: 60ch;
+	}
+	@media (max-width: 600px) {
+		.entry {
+			grid-template-columns: 1fr;
+			gap: 0.6rem;
+		}
+	}
+</style>
